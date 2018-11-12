@@ -28,3 +28,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('user_addresses/{user_address}', 'UserAddressesController@destroy')->name('user_addresses.destroy');
     });
 });
+
+Route::get('test',function (){
+    echo asset('storage/iphoneX.jpg');
+});
