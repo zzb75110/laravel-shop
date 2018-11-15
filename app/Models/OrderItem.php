@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Exceptions\InternalException;
 class OrderItem extends Model
 {
     protected $fillable = ['amount', 'price', 'rating', 'review', 'reviewed_at'];
@@ -24,4 +24,5 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
 }
