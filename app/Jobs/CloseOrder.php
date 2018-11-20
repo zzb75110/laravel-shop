@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 
 // 代表这个类需要被放到队列中执行，而不是触发时立即执行
 class CloseOrder implements ShouldQueue
