@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CouponCode;
+use Illuminate\Support\Facades\Auth;
 
 class CouponCodesController extends Controller
 {
@@ -12,7 +13,7 @@ class CouponCodesController extends Controller
         if (!$record = CouponCode::where('code', $code)->first()) {
             abort(404,'优惠券不存在');
         }
-        $record->checkAvailable();
+        $record->checkAvailable(Auth::user());
         return $record;
     }
 }
