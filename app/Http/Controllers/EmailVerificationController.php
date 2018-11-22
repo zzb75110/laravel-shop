@@ -24,7 +24,6 @@ class EmailVerificationController extends Controller
         if ($token != Cache::get('email_verification_'.$email)) {
             throw new InvalidRequestException('验证链接不正确或已过期');
         }
-
         // 根据邮箱从数据库中获取对应的用户
         // 通常来说能通过 token 校验的情况下不可能出现用户不存在
         // 但是为了代码的健壮性我们还是需要做这个判断

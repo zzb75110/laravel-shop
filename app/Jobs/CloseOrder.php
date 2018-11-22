@@ -8,7 +8,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Order;
-use Illuminate\Support\Facades\Log;
 
 // 代表这个类需要被放到队列中执行，而不是触发时立即执行
 class CloseOrder implements ShouldQueue
@@ -40,9 +39,6 @@ class CloseOrder implements ShouldQueue
             // 循环遍历订单中的商品 SKU，将订单中的数量加回到 SKU 的库存中去
             foreach ($this->order->items as $item) {
                 $item->productSku->addStock($item->amount);
-            }
-            if ($this->order->couponCode) {
-                $this->order->couponCode->changeUsed(false);
             }
         });
     }

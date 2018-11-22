@@ -16,7 +16,7 @@ class RegisteredListener implements ShouldQueue
      */
     public function __construct()
     {
-        //
+
     }
 
     // 当事件被触发时，对应该事件的监听器的 handle() 方法就会被调用
