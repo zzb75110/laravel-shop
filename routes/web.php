@@ -55,6 +55,7 @@ Route::post('payment/wechat/refund_notify', 'PaymentController@wechatRefundNotif
 
 
 Route::get('test',function (){
+    throw new \App\Exceptions\InvalidRequestException('错误',402);
 //    $product = \App\Models\Product::get();
 //    foreach ($product as $pro)
 //    {
