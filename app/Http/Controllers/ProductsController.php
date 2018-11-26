@@ -39,6 +39,8 @@ class ProductsController extends Controller
                     $builder->orderBy($m[1], $m[2]);
                 }
             }
+        }else{
+            $builder->orderBy('created_at','DESC');
         }
 
         // 如果有传入 category_id 字段，并且在数据库中有对应的类目
