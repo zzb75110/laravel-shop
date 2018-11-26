@@ -4,6 +4,7 @@ return [
     'request'      => env('REQUESTBIN'),
     'faker_locale' => 'zh_CN',
     'order_ttl'    => 1800,
+    'ngrok_url' => env('NGROK_URL'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
