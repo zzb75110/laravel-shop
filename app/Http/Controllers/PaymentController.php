@@ -37,7 +37,7 @@ class PaymentController extends Controller
         }
         return view('pages.success', ['msg' => '付款成功']);
     }
-
+//
     // 服务器端回调
     public function alipayNotify()
     {
