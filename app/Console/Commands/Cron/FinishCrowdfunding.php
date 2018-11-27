@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use App\Models\CrowdfundingProduct;
 use Carbon\Carbon;
 use App\Jobs\RefundCrowdfundingOrders;
+use Illuminate\Support\Facades\Log;
+
 class FinishCrowdfunding extends Command
 {
     protected $signature = 'cron:finish-crowdfunding';
