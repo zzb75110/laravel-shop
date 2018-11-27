@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Installment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -30,6 +31,9 @@ class CloseOrder implements ShouldQueue
         // 判断对应的订单是否已经被支付
         // 如果已经支付则不需要关闭订单，直接退出
         if ($this->order->paid_at) {
+            return;
+        }
+        if(Installment::query()->where('order_id',$this->order->id)->exists()){
             return;
         }
         // 通过事务执行 sql
