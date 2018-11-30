@@ -51,19 +51,3 @@ Route::post('installments/alipay/notify', 'InstallmentsController@alipayNotify')
 Route::post('installments/wechat/notify', 'InstallmentsController@wechatNotify')->name('installments.wechat.notify');
 Route::post('installments/wechat/refund_notify', 'InstallmentsController@wechatRefundNotify')->name('installments.wechat.refund_notify');
 
-Route::get('test',function (){
-    throw new \App\Exceptions\InvalidRequestException('错误',402);
-//    $product = \App\Models\Product::get();
-//    foreach ($product as $pro)
-//    {
-//        $category = \App\Models\Category::query()->where('is_directory', false)->inRandomOrder()->first();
-//        $pro->category()->associate($category);
-//        $pro->save();
-//    }
-//    dd($product);
-    $qrCode = new \Endroid\QrCode\QrCode('哈哈哈');
-    // 将生成的二维码图片数据以字符串形式输出，并带上相应的响应类型
-//    dd($qrCode->getContentType());
-    return response($qrCode->writeString(), 200, ['Content-Type' => $qrCode->getContentType()]);
-    echo asset('storage/iphoneX.jpg');
-});
