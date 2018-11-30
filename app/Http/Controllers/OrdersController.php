@@ -16,6 +16,8 @@ use App\Http\Requests\ApplyRefundRequest;
 use App\Models\CouponCode;
 use App\Exceptions\CouponCodeUnavailableException;
 use App\Http\Requests\CrowdFundingOrderRequest;
+use App\Http\Requests\SeckillOrderRequest;
+
 class OrdersController extends Controller
 {
     public function index(Request $request)
@@ -240,6 +242,50 @@ class OrdersController extends Controller
         $crowdfundingTtl = $sku->product->crowdfunding->end_at->getTimestamp() - time();
         // 剩余秒数与默认订单关闭时间取较小值作为订单关闭时间
         dispatch(new CloseOrder($order, min(config('app.order_ttl'), $crowdfundingTtl)));
+        return $order;
+    }
+
+    public function seckill(SeckillOrderRequest $request)
+    {
+        $user    = $request->user();
+        $address = UserAddress::find($request->input('address_id'));
+        $sku     = ProductSku::find($request->input('sku_id'));
+        $order = \DB::transaction(function () use ($user, $address, $sku) {
+            // 更新此地址的最后使用时间
+            $address->update(['last_used_at' => Carbon::now()]);
+            // 创建一个订单
+            $order = new Order([
+                'address'      => [ // 将地址信息放入订单中
+                    'address'       => $address->full_address,
+                    'zip'           => $address->zip,
+                    'contact_name'  => $address->contact_name,
+                    'contact_phone' => $address->contact_phone,
+                ],
+                'remark'       => '',
+                'total_amount' => $sku->price,
+                'type'         => Order::TYPE_SECKILL,
+            ]);
+            // 订单关联到当前用户
+            $order->user()->associate($user);
+            // 写入数据库
+            $order->save();
+            // 创建一个新的订单项并与 SKU 关联
+            $item = $order->items()->make([
+                'amount' => 1, // 秒杀商品只能一份
+                'price'  => $sku->price,
+            ]);
+            $item->product()->associate($sku->product_id);
+            $item->productSku()->associate($sku);
+            $item->save();
+            // 扣减对应 SKU 库存
+            if ($sku->decreaseStock(1) <= 0) {
+                throw new InvalidRequestException('该商品库存不足');
+            }
+
+            return $order;
+        });
+        // 秒杀订单的自动关闭时间与普通订单不同
+        dispatch(new CloseOrder($order, config('app.seckill_order_ttl')));
         return $order;
     }
 }

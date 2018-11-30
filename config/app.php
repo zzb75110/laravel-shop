@@ -11,8 +11,9 @@ return [
 
     'request'      => env('REQUESTBIN'),
     'faker_locale' => 'zh_CN',
-    'order_ttl'    => 1800,
-    'ngrok_url' => env('NGROK_URL'),
+    'order_ttl'    => 1800,                  //普通商品自动关闭时间
+    'seckill_order_ttl' => 600,              //秒杀商品自动关闭时间
+    'ngrok_url' => env('NGROK_URL'),    //支付回调
     /*
     |--------------------------------------------------------------------------
     | Application Name
