@@ -52,7 +52,4 @@ Route::post('installments/alipay/notify', 'InstallmentsController@alipayNotify')
 Route::post('installments/wechat/notify', 'InstallmentsController@wechatNotify')->name('installments.wechat.notify');
 Route::post('installments/wechat/refund_notify', 'InstallmentsController@wechatRefundNotify')->name('installments.wechat.refund_notify');
 
-Route::get('user',function (){
-    return session()->token();
-    return Auth::user();
-});
+Route::get('user','Controller@user');
