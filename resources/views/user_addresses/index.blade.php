@@ -70,7 +70,7 @@
                         axios.delete('/user_addresses/' + id)
                             .then(function () {
                                 // 请求成功之后重新加载页面
-                                location.reload();
+                                // location.reload();
                             })
                     });
             });
