@@ -7,6 +7,7 @@ use Monolog\Logger;
 use Yansongda\Pay\Pay;
 use Carbon\Carbon;
 use Elasticsearch\ClientBuilder as ESClientBuilder;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
         // 当 Laravel 渲染 products.index 和 products.show 模板时，就会使用 CategoryTreeComposer 这个来注入类目树变量
         // 同时 Laravel 还支持通配符，例如 products.* 即代表当渲染 products 目录下的模板时都执行这个 ViewComposer
         \View::composer(['products.index', 'products.show'], \App\Http\ViewComposers\CategoryTreeComposer::class);
+
+        if (app()->environment('local')) {
+            \DB::listen(function ($query) {
+                \Log::info(Str::replaceArray('?', $query->bindings, $query->sql));
+            });
+        }
     }
 
     /**
